@@ -1,22 +1,20 @@
 import { Injectable } from '@nestjs/common';
 
-type ID = string | number;
-
 @Injectable()
 export class BooksService {
-  findById(id: ID) {
-    console.log(id);
-  }
+  private books = [];
+
+  async findOneById(id: number) {}
 
   findAll() {}
 
   create() {}
 
-  edit(id: ID) {
+  edit(id: number) {
     console.log(id);
   }
 
-  delete(id: ID) {
+  delete(id: number) {
     console.log(id);
   }
 }
