@@ -1,7 +1,8 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Book } from './models/book.model';
 import { BooksService } from './books.service';
 import { GetBooksArgs } from './dto/get-books.args';
+import { NewBookInput, UpdateBookInput } from './dto/books.input';
+import { Book } from './entities/book.entity';
 
 @Resolver(() => Book)
 export class BooksResolver {
@@ -10,9 +11,9 @@ export class BooksResolver {
   @Query(() => Book, {
     name: 'book',
     description: 'Get single book from the database',
+    nullable: true,
   })
   async getBook(@Args('id', { type: () => Int }) id: number) {
-    // return found book
     return await this.booksService.findOneById(id);
   }
 
@@ -20,23 +21,32 @@ export class BooksResolver {
     name: 'books',
     description: 'Get a list of books based on name',
   })
-  async getBooks(@Args() args: GetBooksArgs) {}
+  async getBooks(@Args() args: GetBooksArgs) {
+    return await this.booksService.find(args);
+  }
 
   @Mutation(() => Book, {
-    name: 'create-book',
-    description: 'Create a book in our database',
+    name: 'add_book',
+    description: 'Add a book in our database',
   })
-  async createBook() {}
+  async addBook(@Args('newBookData') newBookData: NewBookInput) {
+    return await this.booksService.create(newBookData);
+  }
 
   @Mutation(() => Book, {
-    name: 'edit-book',
+    name: 'edit_book',
     description: 'Edit a book in our database',
   })
-  async editBook() {}
+  async editBook(@Args('editBookData') editBookData: UpdateBookInput) {
+    return await this.booksService.update(editBookData);
+  }
 
   @Mutation(() => Book, {
-    name: 'delete-book',
-    description: 'Delete a book in the database',
+    name: 'delete_book',
+    description: 'Delete book in the database',
+    nullable: true,
   })
-  async deleteBook() {}
+  async deleteBook(@Args('bookId') bookId: number) {
+    return await this.booksService.delete(bookId);
+  }
 }

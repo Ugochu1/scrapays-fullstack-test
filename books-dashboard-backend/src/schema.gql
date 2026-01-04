@@ -1,0 +1,51 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  """The description of a book"""
+  description: String!
+
+  """The unique identifier for a book"""
+  id: Int!
+
+  """The name of a book"""
+  name: String!
+}
+
+type Mutation {
+  """Add a book in our database"""
+  add_book(newBookData: NewBookInput!): Book!
+
+  """Delete book in the database"""
+  delete_book(bookId: Float!): Book
+
+  """Edit a book in our database"""
+  edit_book(editBookData: UpdateBookInput!): Book!
+}
+
+input NewBookInput {
+  description: String!
+  name: String!
+}
+
+type Query {
+  """Get single book from the database"""
+  book(id: Int!): Book
+
+  """Get a list of books based on name"""
+  books(
+    """The number of items to fetch at a time"""
+    limit: Int! = 20
+    name: String
+
+    """The number of items to skip before fetching"""
+    offset: Int! = 0
+  ): [Book!]!
+}
+
+input UpdateBookInput {
+  description: String
+  id: Int!
+  name: String
+}
