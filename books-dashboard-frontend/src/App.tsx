@@ -8,6 +8,7 @@ import { HStack, VStack } from "@chakra-ui/react";
 import AppButton from "./components/common/AppButton";
 import AppTextInput from "./components/common/AppTextInput";
 import { IoMdAdd } from "react-icons/io";
+import BookList from "./components/books/BookList";
 
 function App() {
   const { isLoading, isAuthenticated, loginWithRedirect, user, logout } =
@@ -39,6 +40,38 @@ function App() {
             <AppTextInput placeholder="Search book by name" />
             <AppButton>Search</AppButton>
           </HStack>
+          <BookList
+            bookList={
+              [
+                // {
+                //   id: 1,
+                //   name: "My housemates",
+                //   description:
+                //     "This is a book that talks about having different sets of people as housemates. It's so funny",
+                // },
+                // {
+                //   id: 2,
+                //   name: "My neighbors",
+                //   description:
+                //     "This is a book that talks about having different sets of people as neighbors. It's so funny",
+                // },
+                // {
+                //   id: 3,
+                //   name: "Chike and the river",
+                //   description:
+                //     "A bold attempt to copy Chinua Achebe, what you saying now?",
+                // },
+                // {
+                //   id: 4,
+                //   name: "Chike and the river 2",
+                //   description:
+                //     "A bold attempt to copy Chinua Achebe, what you saying now?",
+                // },
+              ]
+            }
+            onDelete={() => {}}
+            onEdit={() => {}}
+          />
         </VStack>
       </VStack>
     </DashboardLayout>
