@@ -1,22 +1,11 @@
 import "./App.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import AppLoader from "./components/common/AppLoader";
-import { DashboardLayout } from "./components/layouts/DashboardLayout";
-import Sidebar from "./components/layouts/Sidebar";
-import AppText from "./components/common/AppText";
-import { HStack, VStack } from "@chakra-ui/react";
-import AppButton from "./components/common/AppButton";
-import AppTextInput from "./components/common/AppTextInput";
-import { IoMdAdd } from "react-icons/io";
-import BookList from "./components/books/BookList";
-import { useQuery } from "@apollo/client/react";
-import { GET_BOOKS } from "./graphql/books/queries";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
-  const { isLoading, isAuthenticated, loginWithRedirect, user, logout } =
+  const { isLoading, isAuthenticated, loginWithRedirect } =
     useAuth0();
-
-  const { data, loading: isBooksLoading, error } = useQuery(GET_BOOKS);
 
   if (isLoading) {
     return <AppLoader loaderText="Sign in" />;
@@ -27,38 +16,7 @@ function App() {
     return null;
   }
 
-  if (error) console.log(error);
-
-  return (
-    <DashboardLayout sidebar={<Sidebar user={user} logout={logout} />}>
-      <VStack spaceY={5} alignItems="left">
-        <AppText>
-          Manage books in your collection. You can search, create, edit and
-          delete.
-        </AppText>
-        <VStack alignItems="left" spaceY={2}>
-          <div>
-            <AppButton>
-              <IoMdAdd /> Create
-            </AppButton>
-          </div>
-          <HStack>
-            <AppTextInput placeholder="Search book by name" />
-            <AppButton>Search</AppButton>
-          </HStack>
-          {isBooksLoading ? (
-            <AppLoader />
-          ) : (
-            <BookList
-              bookList={data?.books ?? []}
-              onDelete={() => {}}
-              onEdit={() => {}}
-            />
-          )}
-        </VStack>
-      </VStack>
-    </DashboardLayout>
-  );
+  return <DashboardPage />;
 }
 
 export default App;

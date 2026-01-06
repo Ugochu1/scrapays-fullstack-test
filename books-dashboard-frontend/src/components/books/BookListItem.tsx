@@ -1,22 +1,16 @@
 import { HStack, IconButton, Menu, Portal, VStack } from "@chakra-ui/react";
 import { MdMoreVert } from "react-icons/md";
 import AppText from "../common/AppText";
+import type { Book } from "@/interfaces/book";
 
 interface BookItemProps {
-  bookId: number;
-  bookName: string;
-  bookDescription: string;
-  onDelete: (id: number) => void;
-  onEdit: (id: number) => void;
+  book: Book;
+  onPressEdit: (id: number) => void;
+  onPressDelete: (book: Book) => void;
 }
 
-function BookListItem({
-  bookId,
-  bookName,
-  bookDescription,
-  onDelete,
-  onEdit,
-}: BookItemProps) {
+function BookListItem({ book, onPressEdit, onPressDelete }: BookItemProps) {
+  const { id, name, description } = book;
   return (
     <HStack
       justifyContent="space-between"
@@ -31,13 +25,11 @@ function BookListItem({
         w="90%"
         py={5}
         pl={5}
-        onClick={() => console.log("Book item", bookId, "clicked")}
+        onClick={() => console.log("Book item", id, "clicked")}
         cursor="pointer"
       >
-        <AppText fontWeight="bold">
-          {bookName}
-        </AppText>
-        <AppText truncate>{bookDescription}</AppText>
+        <AppText fontWeight="bold">{name}</AppText>
+        <AppText truncate>{description}</AppText>
       </VStack>
 
       <Menu.Root>
@@ -48,11 +40,11 @@ function BookListItem({
         </Menu.Trigger>
         <Portal>
           <Menu.Positioner>
-            <Menu.Content bg="bg">
+            <Menu.Content bg="bg" border="1px solid" borderColor="border">
               <Menu.Item
                 cursor="pointer"
                 value="edit-book"
-                onClick={() => onEdit(bookId)}
+                onClick={() => onPressEdit(id)}
                 color="text"
               >
                 Edit
@@ -60,8 +52,8 @@ function BookListItem({
               <Menu.Item
                 cursor="pointer"
                 value="delete-book"
-                onClick={() => onDelete(bookId)}
                 color="danger"
+                onClick={() => onPressDelete(book)}
               >
                 Delete
               </Menu.Item>
