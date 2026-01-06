@@ -5,11 +5,17 @@ import type { Book } from "@/interfaces/book";
 
 interface BookListProps {
   bookList: { id: number; name: string; description: string }[];
-  onPressEdit: (id: number) => void;
+  onPressView: (book: Book) => void;
+  onPressEdit: (book: Book) => void;
   onPressDelete: (book: Book) => void;
 }
 
-function BookList({ bookList, onPressEdit, onPressDelete }: BookListProps) {
+function BookList({
+  bookList,
+  onPressView,
+  onPressEdit,
+  onPressDelete,
+}: BookListProps) {
   if (bookList.length === 0) {
     return (
       <EmptyState.Root>
@@ -34,6 +40,7 @@ function BookList({ bookList, onPressEdit, onPressDelete }: BookListProps) {
         <BookListItem
           key={book.id}
           book={book}
+          onPressView={onPressView}
           onPressEdit={onPressEdit}
           onPressDelete={onPressDelete}
         />

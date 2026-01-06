@@ -5,12 +5,18 @@ import type { Book } from "@/interfaces/book";
 
 interface BookItemProps {
   book: Book;
-  onPressEdit: (id: number) => void;
+  onPressView: (book: Book) => void;
+  onPressEdit: (book: Book) => void;
   onPressDelete: (book: Book) => void;
 }
 
-function BookListItem({ book, onPressEdit, onPressDelete }: BookItemProps) {
-  const { id, name, description } = book;
+function BookListItem({
+  book,
+  onPressView,
+  onPressEdit,
+  onPressDelete,
+}: BookItemProps) {
+  const { name, description } = book;
   return (
     <HStack
       justifyContent="space-between"
@@ -25,7 +31,7 @@ function BookListItem({ book, onPressEdit, onPressDelete }: BookItemProps) {
         w="90%"
         py={5}
         pl={5}
-        onClick={() => console.log("Book item", id, "clicked")}
+        onClick={() => onPressView(book)}
         cursor="pointer"
       >
         <AppText fontWeight="bold">{name}</AppText>
@@ -43,8 +49,16 @@ function BookListItem({ book, onPressEdit, onPressDelete }: BookItemProps) {
             <Menu.Content bg="bg" border="1px solid" borderColor="border">
               <Menu.Item
                 cursor="pointer"
+                value="view-book"
+                onClick={() => onPressView(book)}
+                color="primary"
+              >
+                View
+              </Menu.Item>
+              <Menu.Item
+                cursor="pointer"
                 value="edit-book"
-                onClick={() => onPressEdit(id)}
+                onClick={() => onPressEdit(book)}
                 color="text"
               >
                 Edit
