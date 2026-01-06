@@ -1,7 +1,7 @@
 import { User, type LogoutOptions } from "@auth0/auth0-react";
 import { Avatar, Center, VStack } from "@chakra-ui/react";
-import AppButton from "./AppButton";
-import AppText from "./AppText";
+import AppButton from "../common/AppButton";
+import AppText from "../common/AppText";
 
 interface SidebarProps {
   user: User | undefined;

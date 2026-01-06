@@ -2,7 +2,7 @@ import "./App.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import AppLoader from "./components/common/AppLoader";
 import { DashboardLayout } from "./components/layouts/DashboardLayout";
-import Sidebar from "./components/common/Sidebar";
+import Sidebar from "./components/layouts/Sidebar";
 import AppText from "./components/common/AppText";
 import { HStack, VStack } from "@chakra-ui/react";
 import AppButton from "./components/common/AppButton";
