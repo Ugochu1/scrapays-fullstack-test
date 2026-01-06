@@ -33,7 +33,8 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
         {/* Top Bar */}
         <HStack
           px={{ base: 2, md: 4 }}
-          py={{ base: 2, md: 4 }}
+          pt={{ base: 2, md: 6 }}
+          pb={{ base: 2, md: 2 }}
           top={0}
           ml={{ base: 0, md: SIDEBAR_WIDTH }}
           position="sticky"
@@ -56,7 +57,7 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
           >
             {sidebar}
           </AppDrawer>
-          <AppText fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">
+          <AppText fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
             Books' Dashboard
           </AppText>
           <Box />
