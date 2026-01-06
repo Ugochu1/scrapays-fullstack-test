@@ -7,8 +7,8 @@ interface AppTextProps extends Pick<TextProps, "color" | 'fontSize' | 'fontWeigh
 
 function AppText({
   children,
-  fontSize = "xl",
-  fontWeight = "medium",
+  fontSize = "sm",
+  fontWeight = 'normal',
   color = "text",
 }: AppTextProps) {
   return (

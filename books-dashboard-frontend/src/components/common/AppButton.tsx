@@ -22,7 +22,7 @@ function AppButton({
 }: AppButtonProps) {
   return (
     <Button
-      size="md"
+      size="sm"
       background={background}
       color={color}
       rounded="l3"

@@ -20,10 +20,10 @@ function Sidebar({ user, logout }: SidebarProps) {
     >
       <VStack spaceY={8}>
         <VStack spaceY={3}>
-          <Avatar.Root size="2xl" colorPalette="blue">
-            <Avatar.Fallback name={user?.name} fontSize="4xl" />
+          <Avatar.Root colorPalette="blue">
+            <Avatar.Fallback name={user?.name} />
           </Avatar.Root>
-          <AppText fontSize="lg" fontWeight="bold">
+          <AppText fontWeight="bold">
             {user?.name}
           </AppText>
         </VStack>

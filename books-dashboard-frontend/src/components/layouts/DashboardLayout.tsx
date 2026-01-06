@@ -32,8 +32,8 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
       <Flex direction="column" flex="1">
         {/* Top Bar */}
         <HStack
-          px={{ base: 6, md: 6 }}
-          py={{ base: 6, md: 8 }}
+          px={{ base: 2, md: 4 }}
+          py={{ base: 2, md: 4 }}
           top={0}
           ml={{ base: 0, md: SIDEBAR_WIDTH }}
           position="sticky"
@@ -56,7 +56,7 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
           >
             {sidebar}
           </AppDrawer>
-          <AppText fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
+          <AppText fontSize={{ base: "lg", md: "2xl" }} fontWeight="bold">
             Books' Dashboard
           </AppText>
           <Box />
@@ -68,6 +68,7 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
           p={6}
           ml={{ base: 0, md: SIDEBAR_WIDTH }}
           overflowY="auto"
+          maxW={800} // max width of 800px
         >
           {children}
         </Box>

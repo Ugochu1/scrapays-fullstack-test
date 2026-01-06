@@ -4,7 +4,10 @@ import AppLoader from "./components/common/AppLoader";
 import { DashboardLayout } from "./components/layouts/DashboardLayout";
 import Sidebar from "./components/common/Sidebar";
 import AppText from "./components/common/AppText";
-import { VStack } from "@chakra-ui/react";
+import { HStack, VStack } from "@chakra-ui/react";
+import AppButton from "./components/common/AppButton";
+import AppTextInput from "./components/common/AppTextInput";
+import { IoMdAdd } from "react-icons/io";
 
 function App() {
   const { isLoading, isAuthenticated, loginWithRedirect, user, logout } =
@@ -21,10 +24,22 @@ function App() {
 
   return (
     <DashboardLayout sidebar={<Sidebar user={user} logout={logout} />}>
-      <VStack>
+      <VStack spaceY={5} alignItems="left">
         <AppText>
-          YOu can create, edit and delete any books in your collection.
+          Manage books in your collection. You can search, create, edit and
+          delete.
         </AppText>
+        <VStack alignItems="left" spaceY={2}>
+          <div>
+            <AppButton>
+              <IoMdAdd /> Create
+            </AppButton>
+          </div>
+          <HStack>
+            <AppTextInput placeholder="Search book by name" />
+            <AppButton>Search</AppButton>
+          </HStack>
+        </VStack>
       </VStack>
     </DashboardLayout>
   );
