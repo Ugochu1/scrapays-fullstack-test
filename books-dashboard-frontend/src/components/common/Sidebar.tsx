@@ -1,5 +1,7 @@
 import { User, type LogoutOptions } from "@auth0/auth0-react";
-import { Avatar, Button, Center, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Center, VStack } from "@chakra-ui/react";
+import AppButton from "./AppButton";
+import AppText from "./AppText";
 
 interface SidebarProps {
   user: User | undefined;
@@ -8,23 +10,30 @@ interface SidebarProps {
 
 function Sidebar({ user, logout }: SidebarProps) {
   return (
-    <Center h="full">
+    <Center
+      h="full"
+      p={{ base: 0, md: 6 }}
+      borderRadius={{ base: 0, md: 24 }}
+      bg='surface'
+      border="1px solid"
+      borderColor='border'
+    >
       <VStack spaceY={8}>
         <VStack spaceY={3}>
           <Avatar.Root size="2xl" colorPalette="blue">
             <Avatar.Fallback name={user?.name} fontSize="4xl" />
           </Avatar.Root>
-          <Text fontSize="lg" fontWeight="bold">
+          <AppText fontSize="lg" fontWeight="bold">
             {user?.name}
-          </Text>
+          </AppText>
         </VStack>
-        <Button
+        <AppButton
           onClick={() =>
             logout({ logoutParams: { returnTo: window.location.origin } })
           }
         >
           Logout
-        </Button>
+        </AppButton>
       </VStack>
     </Center>
   );

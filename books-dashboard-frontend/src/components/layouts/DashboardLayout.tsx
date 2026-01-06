@@ -1,7 +1,8 @@
-import { Box, Flex, HStack, Text, IconButton } from "@chakra-ui/react";
+import { Box, Flex, HStack, IconButton } from "@chakra-ui/react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import type { ReactNode } from "react";
 import AppDrawer from "../common/AppDrawer";
+import AppText from "../common/AppText";
 
 interface DashboardLayoutProps {
   sidebar: ReactNode;
@@ -12,7 +13,7 @@ const SIDEBAR_WIDTH = "max(300px, 20%)";
 
 export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
   return (
-    <Flex width="100vw" minH="100vh">
+    <Flex width="100vw" minH="100vh" background="bg">
       {/* Sidebar */}
       <Box
         position="fixed"
@@ -37,6 +38,9 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
           ml={{ base: 0, md: SIDEBAR_WIDTH }}
           position="sticky"
           gapX={4}
+          bg="bg"
+          borderBottom="1px solid"
+          borderBottomColor="border"
         >
           <AppDrawer
             trigger={
@@ -52,9 +56,9 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
           >
             {sidebar}
           </AppDrawer>
-          <Text fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
+          <AppText fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
             Books' Dashboard
-          </Text>
+          </AppText>
           <Box />
         </HStack>
 
