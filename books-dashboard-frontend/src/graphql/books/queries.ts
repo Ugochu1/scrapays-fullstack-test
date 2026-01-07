@@ -12,9 +12,18 @@ export const GET_BOOKS: TypedDocumentNode<
   GetBooksVariables
 > = gql`
   ${BOOK_FIELDS}
-  query GetBooks($name: String, $limit: Int, $offset: Int) {
-    books(name: $name, limit: $limit, offset: $offset) {
-      ...BookFields
+  query GetBooks($name: String, $limit: Int, $page: Int) {
+    books(name: $name, limit: $limit, page: $page) {
+      books {
+        ...BookFields
+      }
+      pageInfo {
+        page
+        hasNextPage
+        limit
+        totalCount
+        totalPages
+      }
     }
   }
 `;

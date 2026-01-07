@@ -9,11 +9,20 @@ export interface GetBookVariables {
 }
 
 export interface GetBooksQuery {
-  books: Book[];
+  books: {
+    books: Book[]
+    pageInfo: {
+      page: number;
+      hasNextPage: boolean;
+      limit: number;
+      totalCount: number;
+      totalPages: number;
+    }
+  }
 }
 
 export interface GetBooksVariables {
   name?: string;
-  offset?: number;
+  page?: number;
   limit?: number;
 }

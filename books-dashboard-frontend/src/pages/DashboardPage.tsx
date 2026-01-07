@@ -9,25 +9,22 @@ import Sidebar from "@/components/layouts/Sidebar";
 import { GET_BOOKS } from "@/graphql/books/queries";
 import type { Book } from "@/interfaces/book";
 import { useQuery } from "@apollo/client/react";
-import { useAuth0 } from "@auth0/auth0-react";
-import { HStack, VStack } from "@chakra-ui/react";
+import { Flex, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { useDebounce } from "use-debounce";
 
-const LIMIT = 1; // for simplicity, let's make this a constant
+const LIMIT = 10; // for simplicity, let's make this a constant
 
 function DashboardPage() {
   const navigate = useNavigate();
-  const { user, logout } = useAuth0();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
-  
+
   // search logic
   const [searchBookName, setSearchBookName] = useState("");
-  const [offset, setOffset] = useState(0);
   const [debouncedSearch] = useDebounce(searchBookName, 300); // 300ms debounce
 
   // get books query
@@ -40,28 +37,32 @@ function DashboardPage() {
     variables: {
       name: debouncedSearch || undefined,
       limit: LIMIT,
-      offset: offset,
+      page: 1,
     },
     notifyOnNetworkStatusChange: true,
   });
 
   if (error) console.log(error);
 
-  const loadMore = () => {
-    fetchMore({
+  const loadMore = async () => {
+    if (!data?.books.pageInfo.hasNextPage) return;
+
+    await fetchMore({
       variables: {
-        offset: offset + LIMIT,
+        page: data.books.pageInfo.page + 1,
+        limit: LIMIT,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
 
         return {
-          books: [...prev.books, ...fetchMoreResult.books],
+          books: {
+            ...fetchMoreResult.books,
+            books: [...prev.books.books, ...fetchMoreResult.books.books],
+          },
         };
       },
     });
-
-    setOffset((prev) => prev + LIMIT);
   };
 
   const onPressDelete = (book: Book) => {
@@ -83,14 +84,11 @@ function DashboardPage() {
 
   return (
     <>
-      <DashboardLayout
-        headerTitle="My books"
-        sidebar={<Sidebar user={user} logout={logout} />}
-      >
+      <DashboardLayout headerTitle="My books" sidebar={<Sidebar />}>
         <VStack spaceY={5} alignItems="left">
           <AppText>
             Manage books in your collection. You can search, create, edit and
-            delete. {searchBookName}
+            delete.
           </AppText>
           <VStack alignItems="left" spaceY={2}>
             <div>
@@ -98,22 +96,24 @@ function DashboardPage() {
                 <IoMdAdd /> Create
               </AppButton>
             </div>
-            <HStack>
-              <AppTextInput
-                placeholder="Search book by name"
-                onTextChange={(newInput) => setSearchBookName(newInput)}
-              />
-              <AppButton>Search</AppButton>
-            </HStack>
-            {isBooksLoading ? (
-              <AppLoader />
-            ) : (
-              <BookList
-                bookList={data?.books ?? []}
-                onPressView={onPressView}
-                onPressDelete={onPressDelete}
-                onPressEdit={onPressEdit}
-              />
+
+            <AppTextInput
+              placeholder="Search book by name"
+              onTextChange={(newInput) => setSearchBookName(newInput)}
+            />
+            
+            <BookList
+              bookList={data?.books.books ?? []}
+              onPressView={onPressView}
+              onPressDelete={onPressDelete}
+              onPressEdit={onPressEdit}
+            />
+            {isBooksLoading && <AppLoader loaderText="Fetching..." />}
+
+            {data?.books.pageInfo.hasNextPage && (
+              <Flex justifyContent="center">
+                <AppButton onClick={loadMore}>Fetch More</AppButton>
+              </Flex>
             )}
           </VStack>
         </VStack>

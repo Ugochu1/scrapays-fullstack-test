@@ -1,14 +1,10 @@
-import { User, type LogoutOptions } from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Avatar, Center, VStack } from "@chakra-ui/react";
 import AppButton from "../common/AppButton";
 import AppText from "../common/AppText";
 
-interface SidebarProps {
-  user: User | undefined;
-  logout: (options?: LogoutOptions | undefined) => Promise<void>;
-}
-
-function Sidebar({ user, logout }: SidebarProps) {
+function Sidebar() {
+  const { user, logout } = useAuth0();
   return (
     <Center
       h="full"
