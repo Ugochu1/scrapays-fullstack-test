@@ -3,10 +3,10 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import type { ReactNode } from "react";
 import AppDrawer from "../common/AppDrawer";
 import AppText from "../common/AppText";
+import Sidebar from "./Sidebar";
 
 interface DashboardLayoutProps {
   headerTitle: string;
-  sidebar: ReactNode;
   children: ReactNode;
 }
 
@@ -14,7 +14,6 @@ const SIDEBAR_WIDTH = "max(300px, 20%)";
 
 export function DashboardLayout({
   headerTitle,
-  sidebar,
   children,
 }: DashboardLayoutProps) {
   return (
@@ -26,11 +25,9 @@ export function DashboardLayout({
         left={0}
         h="100vh"
         w={SIDEBAR_WIDTH}
-        px={4}
-        py={6}
         display={{ base: "none", md: "block" }}
       >
-        {sidebar}
+        <Sidebar />
       </Box>
 
       {/* Main Area */}
@@ -60,7 +57,7 @@ export function DashboardLayout({
             placement="start"
             size="md"
           >
-            {sidebar}
+            <Sidebar />
           </AppDrawer>
           <AppText fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
             {headerTitle}

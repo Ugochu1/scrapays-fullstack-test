@@ -10,6 +10,8 @@ interface BookItemProps {
   onPressDelete: (book: Book) => void;
 }
 
+const TRUNCATE_LENGTH = 70
+
 function BookListItem({
   book,
   onPressView,
@@ -17,6 +19,15 @@ function BookListItem({
   onPressDelete,
 }: BookItemProps) {
   const { name, description } = book;
+
+  const truncateDescription = () => {
+    let desc = description.substring(0, TRUNCATE_LENGTH)
+    if (description.length > TRUNCATE_LENGTH) {
+      desc += "..."
+    }
+    return desc;
+  }
+
   return (
     <HStack
       justifyContent="space-between"
@@ -27,15 +38,16 @@ function BookListItem({
       w="full"
     >
       <VStack
-        alignItems="left"
+        alignItems="flex-start"
         w="90%"
+        minW={0}
         py={5}
         pl={5}
         onClick={() => onPressView(book)}
         cursor="pointer"
       >
         <AppText fontWeight="bold">{name}</AppText>
-        <AppText truncate>{description}</AppText>
+        <AppText>{truncateDescription()}</AppText>
       </VStack>
 
       <Menu.Root>

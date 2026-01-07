@@ -9,9 +9,8 @@ function Sidebar() {
     <Center
       h="full"
       p={{ base: 0, md: 6 }}
-      borderRadius={{ base: 0, md: 24 }}
       bg='surface'
-      border="1px solid"
+      borderRight="1px solid"
       borderColor='border'
     >
       <VStack spaceY={8}>

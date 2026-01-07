@@ -5,7 +5,6 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import Sidebar from "@/components/layouts/Sidebar";
 import { GET_BOOKS } from "@/graphql/books/queries";
 import type { Book } from "@/interfaces/book";
 import { useQuery } from "@apollo/client/react";
@@ -80,7 +79,7 @@ function DashboardPage() {
 
   return (
     <>
-      <DashboardLayout headerTitle="My books" sidebar={<Sidebar />}>
+      <DashboardLayout headerTitle="My books">
         <VStack spaceY={5} alignItems="left">
           <AppText>
             Manage books in your collection. You can search, create, edit and
@@ -94,6 +93,7 @@ function DashboardPage() {
             </div>
 
             <AppTextInput
+              label="Search book name"
               placeholder="Search book by name"
               onTextChange={(newInput) => setSearchBookName(newInput)}
             />
