@@ -2,13 +2,20 @@ import "./App.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import AppLoader from "./components/common/AppLoader";
 import DashboardPage from "./pages/DashboardPage";
+import { Center } from "@chakra-ui/react";
+import { Route, Routes } from "react-router";
+import ViewBookPage from "./pages/ViewBookPage";
+import EditBookPage from "./pages/EditBookPage";
 
 function App() {
-  const { isLoading, isAuthenticated, loginWithRedirect } =
-    useAuth0();
+  const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
 
   if (isLoading) {
-    return <AppLoader loaderText="Sign in" />;
+    return (
+      <Center h="full" w="100vw" bg="bg">
+        <AppLoader loaderText="Signing in" />
+      </Center>
+    );
   }
 
   if (!isAuthenticated) {
@@ -16,7 +23,14 @@ function App() {
     return null;
   }
 
-  return <DashboardPage />;
+  // return <DashboardPage />;
+  return (
+    <Routes>
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/books/:id" element={<ViewBookPage />} />
+      <Route path="/books/:id/edit" element={<EditBookPage />} />
+    </Routes>
+  );
 }
 
 export default App;

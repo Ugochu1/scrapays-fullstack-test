@@ -11,17 +11,58 @@ import type { Book } from "@/interfaces/book";
 import { useQuery } from "@apollo/client/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { HStack, VStack } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
+import { useNavigate } from "react-router";
+import { useDebounce } from "use-debounce";
+
+const LIMIT = 1; // for simplicity, let's make this a constant
 
 function DashboardPage() {
+  const navigate = useNavigate();
   const { user, logout } = useAuth0();
-  const { data, loading: isBooksLoading, error } = useQuery(GET_BOOKS);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  
+  // search logic
+  const [searchBookName, setSearchBookName] = useState("");
+  const [offset, setOffset] = useState(0);
+  const [debouncedSearch] = useDebounce(searchBookName, 300); // 300ms debounce
+
+  // get books query
+  const {
+    data,
+    loading: isBooksLoading,
+    error,
+    fetchMore,
+  } = useQuery(GET_BOOKS, {
+    variables: {
+      name: debouncedSearch || undefined,
+      limit: LIMIT,
+      offset: offset,
+    },
+    notifyOnNetworkStatusChange: true,
+  });
 
   if (error) console.log(error);
+
+  const loadMore = () => {
+    fetchMore({
+      variables: {
+        offset: offset + LIMIT,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+
+        return {
+          books: [...prev.books, ...fetchMoreResult.books],
+        };
+      },
+    });
+
+    setOffset((prev) => prev + LIMIT);
+  };
 
   const onPressDelete = (book: Book) => {
     setSelectedBook(book);
@@ -29,12 +70,16 @@ function DashboardPage() {
   };
 
   const onPressView = (book: Book) => {
-    console.log(book.id);
+    navigate(`/books/${book.id}`);
   };
 
   const onPressEdit = (book: Book) => {
-    console.log(book.id);
+    navigate(`/books/${book.id}/edit`);
   };
+
+  useEffect(() => {
+    console.log(data?.books, "is my books");
+  }, [data]);
 
   return (
     <>
@@ -45,7 +90,7 @@ function DashboardPage() {
         <VStack spaceY={5} alignItems="left">
           <AppText>
             Manage books in your collection. You can search, create, edit and
-            delete.
+            delete. {searchBookName}
           </AppText>
           <VStack alignItems="left" spaceY={2}>
             <div>
@@ -54,7 +99,10 @@ function DashboardPage() {
               </AppButton>
             </div>
             <HStack>
-              <AppTextInput placeholder="Search book by name" />
+              <AppTextInput
+                placeholder="Search book by name"
+                onTextChange={(newInput) => setSearchBookName(newInput)}
+              />
               <AppButton>Search</AppButton>
             </HStack>
             {isBooksLoading ? (
