@@ -5,6 +5,7 @@ interface AppTextInputProps {
   placeholder?: string;
   defaultValue?: string;
   onTextChange?: (value: string) => void;
+  value?: string;
 }
 
 function AppTextInput({
@@ -12,6 +13,7 @@ function AppTextInput({
   placeholder,
   defaultValue,
   onTextChange,
+  value
 }: AppTextInputProps) {
   return (
     <Field.Root>
@@ -20,6 +22,7 @@ function AppTextInput({
         placeholder={placeholder}
         defaultValue={defaultValue}
         onChange={(e) => onTextChange?.(e.target.value)}
+        value={value}
       />
     </Field.Root>
   );

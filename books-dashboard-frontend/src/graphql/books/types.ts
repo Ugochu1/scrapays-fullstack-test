@@ -26,3 +26,34 @@ export interface GetBooksVariables {
   page?: number;
   limit?: number;
 }
+
+export interface EditBookMutation {
+  edit_book: Book
+}
+
+export interface EditBookVariables {
+  editBookData: {
+    id: number;
+    name?: string;
+    description?: string;
+  }
+}
+
+export interface CreateBookMutation {
+  add_book: Book;
+}
+
+export interface CreateBookVariables {
+  newBookData: {
+    name: string;
+    description: string;
+  }
+}
+
+export interface DeleteBookMutation {
+  delete_book: Book;
+}
+
+export interface DeleteBookVariables {
+  bookId: number;
+}

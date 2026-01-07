@@ -31,6 +31,7 @@ function AppButton({
       loading={loading}
       loadingText={loadingText}
       onClick={onClick}
+      cursor={disabled ? "disabled" : "pointer"}
     >
       {children}
     </Button>

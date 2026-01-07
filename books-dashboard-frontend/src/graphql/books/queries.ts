@@ -30,7 +30,7 @@ export const GET_BOOKS: TypedDocumentNode<
 
 export const GET_BOOK: TypedDocumentNode<GetBookQuery, GetBookVariables> = gql`
   ${BOOK_FIELDS}
-  query GetBook($id: ID) {
+  query GetBook($id: Int!) {
     book(id: $id) {
       ...BookFields
     }

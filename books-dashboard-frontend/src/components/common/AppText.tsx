@@ -2,7 +2,7 @@ import { Text, type TextProps } from "@chakra-ui/react";
 import type { ReactNode } from "react";
 
 interface AppTextProps
-  extends Pick<TextProps, "color" | "fontSize" | "fontWeight"> {
+  extends Pick<TextProps, "color" | "fontSize" | "fontWeight" | "textTransform"> {
   children: ReactNode;
 }
 
@@ -11,12 +11,14 @@ function AppText({
   fontSize = "sm",
   fontWeight = "normal",
   color = "text",
+  textTransform,
 }: AppTextProps) {
   return (
     <Text
       fontSize={fontSize}
       fontWeight={fontWeight}
       color={color}
+      textTransform={textTransform}
     >
       {children}
     </Text>

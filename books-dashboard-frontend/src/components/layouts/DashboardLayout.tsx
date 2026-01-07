@@ -59,7 +59,11 @@ export function DashboardLayout({
           >
             <Sidebar />
           </AppDrawer>
-          <AppText fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
+          <AppText
+            textTransform="capitalize"
+            fontSize={{ base: "lg", md: "xl" }}
+            fontWeight="bold"
+          >
             {headerTitle}
           </AppText>
           <Box />
