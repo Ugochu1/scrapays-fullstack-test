@@ -5,13 +5,18 @@ import AppDrawer from "../common/AppDrawer";
 import AppText from "../common/AppText";
 
 interface DashboardLayoutProps {
+  headerTitle: string;
   sidebar: ReactNode;
   children: ReactNode;
 }
 
 const SIDEBAR_WIDTH = "max(300px, 20%)";
 
-export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
+export function DashboardLayout({
+  headerTitle,
+  sidebar,
+  children,
+}: DashboardLayoutProps) {
   return (
     <Flex width="100vw" minH="100vh" background="bg">
       {/* Sidebar */}
@@ -58,7 +63,7 @@ export function DashboardLayout({ sidebar, children }: DashboardLayoutProps) {
             {sidebar}
           </AppDrawer>
           <AppText fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
-            Books' Dashboard
+            {headerTitle}
           </AppText>
           <Box />
         </HStack>
