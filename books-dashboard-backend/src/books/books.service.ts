@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
-import { Repository } from 'typeorm';
-import { GetBooksArgs } from './dto/get-books.args';
+import { ILike, Repository } from 'typeorm';
+import { BooksResult, GetBooksArgs } from './dto/get-books.args';
 import { NewBookInput, UpdateBookInput } from './dto/books.input';
 
 @Injectable()
@@ -16,17 +16,28 @@ export class BooksService {
     return this.booksRepository.findOneBy({ id });
   }
 
-  async find({ name, offset, limit }: GetBooksArgs): Promise<Book[]> {
-    // if name is passed, search by name
-    if (name)
-      return this.booksRepository.find({
-        where: { name },
-        take: limit,
-        skip: offset,
-      });
+  async find({ name, page, limit }: GetBooksArgs): Promise<BooksResult> {
+    const offset = (page - 1) * limit;
 
-    // else, return all
-    return this.booksRepository.find({ take: limit, skip: offset });
+    const [books, totalCount] = await this.booksRepository.findAndCount({
+      where: name ? { name: ILike(`%${name}%`) } : {}, // if name is passed, search by name else find all
+      take: limit,
+      skip: offset,
+      order: { createdAt: 'desc' },
+    });
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      books,
+      pageInfo: {
+        hasNextPage: page < totalPages,
+        totalCount,
+        totalPages,
+        page,
+        limit,
+      },
+    };
   }
 
   async create({ name, description }: NewBookInput): Promise<Book> {

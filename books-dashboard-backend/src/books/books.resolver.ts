@@ -1,6 +1,6 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BooksService } from './books.service';
-import { GetBooksArgs } from './dto/get-books.args';
+import { BooksResult, GetBooksArgs } from './dto/get-books.args';
 import { NewBookInput, UpdateBookInput } from './dto/books.input';
 import { Book } from './entities/book.entity';
 
@@ -17,7 +17,7 @@ export class BooksResolver {
     return await this.booksService.findOneById(id);
   }
 
-  @Query(() => [Book], {
+  @Query(() => BooksResult, {
     name: 'books',
     description: 'Get a list of books based on name',
   })
