@@ -9,8 +9,8 @@ import Sidebar from "@/components/layouts/Sidebar";
 import { GET_BOOKS } from "@/graphql/books/queries";
 import type { Book } from "@/interfaces/book";
 import { useQuery } from "@apollo/client/react";
-import { Flex, HStack, VStack } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Flex, VStack } from "@chakra-ui/react";
+import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { useDebounce } from "use-debounce";
@@ -78,10 +78,6 @@ function DashboardPage() {
     navigate(`/books/${book.id}/edit`);
   };
 
-  useEffect(() => {
-    console.log(data?.books, "is my books");
-  }, [data]);
-
   return (
     <>
       <DashboardLayout headerTitle="My books" sidebar={<Sidebar />}>
@@ -101,7 +97,7 @@ function DashboardPage() {
               placeholder="Search book by name"
               onTextChange={(newInput) => setSearchBookName(newInput)}
             />
-            
+
             <BookList
               bookList={data?.books.books ?? []}
               onPressView={onPressView}
