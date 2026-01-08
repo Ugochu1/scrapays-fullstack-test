@@ -16,7 +16,6 @@ const environment = process.env.NODE_ENV || DEV;
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${environment}.local`,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
