@@ -39,11 +39,11 @@ export interface EditBookVariables {
   }
 }
 
-export interface CreateBookMutation {
+export interface AddBookMutation {
   add_book: Book;
 }
 
-export interface CreateBookVariables {
+export interface AddBookVariables {
   newBookData: {
     name: string;
     description: string;

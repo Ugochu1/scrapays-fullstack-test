@@ -1,7 +1,7 @@
 import { gql, type TypedDocumentNode } from "@apollo/client";
 import type {
-  CreateBookMutation,
-  CreateBookVariables,
+  AddBookMutation,
+  AddBookVariables,
   DeleteBookMutation,
   DeleteBookVariables,
   EditBookMutation,
@@ -21,9 +21,9 @@ export const EDIT_BOOK: TypedDocumentNode<
   }
 `;
 
-export const CREATE_BOOK: TypedDocumentNode<
-  CreateBookMutation,
-  CreateBookVariables
+export const ADD_BOOK: TypedDocumentNode<
+  AddBookMutation,
+  AddBookVariables
 > = gql`
   ${BOOK_FIELDS}
   mutation CreateBook($newBookData: NewBookInput!) {

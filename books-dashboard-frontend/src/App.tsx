@@ -6,6 +6,7 @@ import { Center } from "@chakra-ui/react";
 import { Route, Routes } from "react-router";
 import ViewBookPage from "./pages/ViewBookPage";
 import EditBookPage from "./pages/EditBookPage";
+import AddBookPage from "./pages/AddBookPage";
 
 function App() {
   const { isLoading, isAuthenticated, loginWithRedirect } = useAuth0();
@@ -29,6 +30,7 @@ function App() {
       <Route path="/" element={<DashboardPage />} />
       <Route path="/books/:id" element={<ViewBookPage />} />
       <Route path="/books/:id/edit" element={<EditBookPage />} />
+      <Route path="/books/add" element={<AddBookPage />} />
     </Routes>
   );
 }

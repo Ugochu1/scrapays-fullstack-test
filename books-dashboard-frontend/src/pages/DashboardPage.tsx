@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/client/react";
 import { Flex, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDebounce } from "use-debounce";
 
 const LIMIT = 10; // for simplicity, let's make this a constant
@@ -87,9 +87,11 @@ function DashboardPage() {
           </AppText>
           <VStack alignItems="left" spaceY={2}>
             <div>
-              <AppButton>
-                <IoMdAdd /> Create
-              </AppButton>
+              <Link to="/books/add">
+                <AppButton>
+                  <IoMdAdd /> Add book
+                </AppButton>
+              </Link>
             </div>
 
             <AppTextInput

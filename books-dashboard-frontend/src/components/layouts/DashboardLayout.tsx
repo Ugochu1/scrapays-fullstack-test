@@ -37,9 +37,7 @@ export function DashboardLayout({
           px={{ base: 2, md: 4 }}
           pt={{ base: 2, md: 6 }}
           pb={{ base: 2, md: 2 }}
-          top={0}
           ml={{ base: 0, md: SIDEBAR_WIDTH }}
-          position="sticky"
           gapX={4}
           bg="bg"
           borderBottom="1px solid"

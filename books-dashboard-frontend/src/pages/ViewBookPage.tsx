@@ -24,11 +24,15 @@ function ViewBookPage() {
       {loading && <AppLoader loaderText="Fetching Book..." />}
 
       <VStack alignItems="flex-start" spaceY={10}>
-        <VStack alignItems="flex-start" w="full">
+        <VStack alignItems="flex-start" w="full" spaceY={3}>
           <HStack>
             <AppText fontWeight="bold">ID:</AppText>
             <AppText>{data?.book.id}</AppText>
           </HStack>
+          <div>
+            <AppText fontWeight="bold">Name:</AppText>
+            <AppText>{data?.book.name}</AppText>
+          </div>
           <div>
             <AppText fontWeight="bold">Description:</AppText>
             <AppText>{data?.book.description}</AppText>
