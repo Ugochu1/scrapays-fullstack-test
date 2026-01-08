@@ -1,6 +1,6 @@
 import BookList from "@/components/books/BookList";
+import DeleteBookDialog from "@/components/books/DeleteBookDialog";
 import AppButton from "@/components/common/AppButton";
-import AppDialog from "@/components/common/AppDialog";
 import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
@@ -19,7 +19,7 @@ const LIMIT = 10; // for simplicity, let's make this a constant
 function DashboardPage() {
   const navigate = useNavigate();
 
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
 
   // search logic
@@ -66,7 +66,7 @@ function DashboardPage() {
 
   const onPressDelete = (book: Book) => {
     setSelectedBook(book);
-    setDialogOpen(true);
+    setDeleteDialogOpen(true);
   };
 
   const onPressView = (book: Book) => {
@@ -85,7 +85,7 @@ function DashboardPage() {
             Manage books in your collection. You can search, create, edit and
             delete.
           </AppText>
-          <VStack alignItems="left" spaceY={2}>
+          <VStack alignItems="left" spaceY={5}>
             <div>
               <Link to="/books/add">
                 <AppButton>
@@ -118,14 +118,11 @@ function DashboardPage() {
       </DashboardLayout>
 
       {/* dialog for delete book confirmation */}
-      <AppDialog
-        open={dialogOpen}
-        setOpen={setDialogOpen}
-        actionTrigger={<AppButton background="danger">Yes, Delete</AppButton>}
-        title="Delete book"
-      >
-        Are you sure you want to delete {selectedBook?.name}?
-      </AppDialog>
+      <DeleteBookDialog
+        dialogOpen={deleteDialogOpen}
+        setDialogOpen={setDeleteDialogOpen}
+        selectedBook={selectedBook}
+      />
     </>
   );
 }

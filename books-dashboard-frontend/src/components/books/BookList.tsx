@@ -35,7 +35,7 @@ function BookList({
   }
 
   return (
-    <>
+    <VStack>
       {bookList.map((book) => (
         <BookListItem
           key={book.id}
@@ -45,7 +45,7 @@ function BookList({
           onPressDelete={onPressDelete}
         />
       ))}
-    </>
+    </VStack>
   );
 }
 

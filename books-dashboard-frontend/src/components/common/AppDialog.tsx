@@ -34,14 +34,14 @@ function AppDialog({
             <Dialog.Body>{children}</Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant="outline" onClick={closeDialog}>
+                <Button variant="outline" onClick={closeDialog} color="text">
                   Cancel
                 </Button>
               </Dialog.ActionTrigger>
               {actionTrigger}
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
-              <CloseButton size="sm" onClick={closeDialog} />
+              <CloseButton size="sm" onClick={closeDialog} color="text" bg="bg" />
             </Dialog.CloseTrigger>
           </Dialog.Content>
         </Dialog.Positioner>

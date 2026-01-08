@@ -18,7 +18,7 @@ function ViewBookPage() {
   return (
     <DashboardLayout
       headerTitle={
-        data?.book.name ? `"${data.book.name}" details` : "Book Details"
+        data?.book.name ? data.book.name : "Book Details"
       }
     >
       {loading && <AppLoader loaderText="Fetching Book..." />}

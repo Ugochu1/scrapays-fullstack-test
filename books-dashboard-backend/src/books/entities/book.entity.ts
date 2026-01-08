@@ -12,7 +12,9 @@ import {
 @ObjectType()
 @Entity('books')
 export class Book {
-  @Field(() => Int, { description: 'The unique identifier for a book' })
+  @Field(() => Int, {
+    description: 'The unique identifier for a book',
+  })
   @PrimaryGeneratedColumn()
   id: number;
 

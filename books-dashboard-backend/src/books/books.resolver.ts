@@ -44,9 +44,8 @@ export class BooksResolver {
   @Mutation(() => Book, {
     name: 'delete_book',
     description: 'Delete book in the database',
-    nullable: true,
   })
-  async deleteBook(@Args('bookId') bookId: number) {
+  async deleteBook(@Args('bookId', { type: () => Int }) bookId: number) {
     return await this.booksService.delete(bookId);
   }
 }

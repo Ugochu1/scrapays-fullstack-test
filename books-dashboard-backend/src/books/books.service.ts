@@ -67,9 +67,13 @@ export class BooksService {
 
     // if it doesn't exist, throw exception
     if (!bookToDelete) throw new NotFoundException('Book not found');
+    // get book id
+    const bookToDeleteId = bookToDelete.id;
 
     // if it does, remove it from db and return
     await this.booksRepository.remove(bookToDelete);
+    // add the id back to bookToDelete
+    bookToDelete.id = bookToDeleteId;
     return bookToDelete;
   }
 }
