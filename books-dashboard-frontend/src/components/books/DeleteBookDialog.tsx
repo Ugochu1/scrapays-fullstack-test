@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client/react";
 import { DELETE_BOOK } from "@/graphql/books/mutations";
 import AppLoader from "../common/AppLoader";
 import type { Reference } from "@apollo/client";
+import { toaster } from "../ui/toaster";
 
 interface DeleteBookDialogProps {
   selectedBook?: Book;
@@ -23,9 +24,16 @@ function DeleteBookDialog({
     variables: { bookId: selectedBook?.id },
     onError(error) {
       console.log(error.name, "occurred when deleting book");
+      toaster.create({
+        description: error.message,
+        type: "error",
+      });
     },
     onCompleted(data) {
-      console.log(data.delete_book.name, "deleted successfully");
+      toaster.create({
+        description: `${data.delete_book.name} deleted successfully`,
+        type: "success",
+      });
       if (onDeleteCompleted) onDeleteCompleted(data.delete_book); // call onDelete callback on parent
     },
     update(cache, { data }) {
@@ -50,9 +58,9 @@ function DeleteBookDialog({
   });
 
   const deleteBookAndCloseDialog = async () => {
-    await deleteBook()
+    await deleteBook();
     setDialogOpen(false);
-  }
+  };
 
   return (
     <AppDialog

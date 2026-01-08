@@ -5,6 +5,7 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
+import { toaster } from "@/components/ui/toaster";
 import { EDIT_BOOK } from "@/graphql/books/mutations";
 import { GET_BOOK } from "@/graphql/books/queries";
 import { useMutation, useQuery } from "@apollo/client/react";
@@ -41,9 +42,16 @@ function EditBookPage() {
     onError(error) {
       // do something with the error message
       console.log(error.message, error.name);
+      toaster.create({
+        description: error.message,
+        type: "error",
+      });
     },
     onCompleted(data) {
-      console.log(data.edit_book.name, "updated successfully");
+      toaster.create({
+        description: `Successfully updated book "${data.edit_book.name}"`,
+        type: "success",
+      });
       setBookName(data.edit_book.name);
       setBookDescription(data.edit_book.description);
     },

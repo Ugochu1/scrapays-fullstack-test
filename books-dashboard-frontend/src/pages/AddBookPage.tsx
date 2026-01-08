@@ -3,6 +3,7 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
+import { toaster } from "@/components/ui/toaster";
 import { ADD_BOOK } from "@/graphql/books/mutations";
 import type { Reference } from "@apollo/client";
 import { gql } from "@apollo/client";
@@ -22,10 +23,16 @@ function AddBookPage() {
       },
     },
     onError(error) {
-      console.log(error.name, error.message); // for now
+      toaster.create({
+        description: error.message,
+        type: "error",
+      });
     },
     onCompleted(data) {
-      console.log("Added book", data.add_book.name); // for now, display a toast if possible, and reset
+      toaster.create({
+        description: `Successfully added book "${data.add_book.name}"`,
+        type: "success",
+      });
       setBookName(""); // reset
       setBookDescription(""); // reset
     },
