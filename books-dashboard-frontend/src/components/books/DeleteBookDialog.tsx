@@ -7,17 +7,17 @@ import AppLoader from "../common/AppLoader";
 import type { Reference } from "@apollo/client";
 
 interface DeleteBookDialogProps {
-  selectedBook: Book | null;
+  selectedBook?: Book;
   dialogOpen: boolean;
   setDialogOpen: (value: boolean) => void;
-  onDelete?: (book: Book) => void;
+  onDeleteCompleted?: (book: Book) => void;
 }
 
 function DeleteBookDialog({
   selectedBook,
   dialogOpen,
   setDialogOpen,
-  onDelete,
+  onDeleteCompleted,
 }: DeleteBookDialogProps) {
   const [deleteBook, { loading: isDeleting }] = useMutation(DELETE_BOOK, {
     variables: { bookId: selectedBook?.id },
@@ -26,7 +26,7 @@ function DeleteBookDialog({
     },
     onCompleted(data) {
       console.log(data.delete_book.name, "deleted successfully");
-      if (onDelete) onDelete(data.delete_book); // call onDelete callback on parent
+      if (onDeleteCompleted) onDeleteCompleted(data.delete_book); // call onDelete callback on parent
     },
     update(cache, { data }) {
       const deletedBookId = data?.delete_book?.id;
@@ -65,7 +65,7 @@ function DeleteBookDialog({
       }
       title="Delete book"
     >
-      Are you sure you want to delete {selectedBook?.name}?
+      Are you sure you want to delete "{selectedBook?.name}"?
     </AppDialog>
   );
 }

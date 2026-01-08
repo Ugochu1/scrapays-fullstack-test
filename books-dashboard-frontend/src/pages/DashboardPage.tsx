@@ -20,7 +20,7 @@ function DashboardPage() {
   const navigate = useNavigate();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [selectedBook, setSelectedBook] = useState<Book>();
 
   // search logic
   const [searchBookName, setSearchBookName] = useState("");

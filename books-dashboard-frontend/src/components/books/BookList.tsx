@@ -1,7 +1,7 @@
-import { EmptyState, VStack } from "@chakra-ui/react";
-import { FaBookOpen } from "react-icons/fa";
+import { VStack } from "@chakra-ui/react";
 import BookListItem from "./BookListItem";
 import type { Book } from "@/interfaces/book";
+import AppEmptyState from "../common/AppEmptyState";
 
 interface BookListProps {
   bookList: { id: number; name: string; description: string }[];
@@ -18,19 +18,10 @@ function BookList({
 }: BookListProps) {
   if (bookList.length === 0) {
     return (
-      <EmptyState.Root>
-        <EmptyState.Content>
-          <EmptyState.Indicator>
-            <FaBookOpen />
-          </EmptyState.Indicator>
-          <VStack textAlign="center">
-            <EmptyState.Title>Your book collection is empty</EmptyState.Title>
-            <EmptyState.Description>
-              Create a book by clicking on "+ Create" above.
-            </EmptyState.Description>
-          </VStack>
-        </EmptyState.Content>
-      </EmptyState.Root>
+      <AppEmptyState
+        title="No books found."
+        description={'Add a book by clicking on "+ Add book" above.'}
+      />
     );
   }
 

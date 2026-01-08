@@ -4,6 +4,8 @@ import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { ADD_BOOK } from "@/graphql/books/mutations";
+import type { Reference } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 import { VStack } from "@chakra-ui/react";
 import { useState } from "react";
@@ -24,8 +26,46 @@ function AddBookPage() {
     },
     onCompleted(data) {
       console.log("Added book", data.add_book.name); // for now, display a toast if possible, and reset
-      setBookName("") // reset
-      setBookDescription("") // reset
+      setBookName(""); // reset
+      setBookDescription(""); // reset
+    },
+    update(cache, { data }) {
+      const newBook = data?.add_book;
+      if (!newBook) return;
+
+      cache.modify({
+        fields: {
+          books(existingBooksResponse = {}, { readField }) {
+            const existingBooks: readonly Reference[] =
+              existingBooksResponse.books ?? [];
+
+            const newBookRef = cache.writeFragment({
+              data: newBook,
+              fragment: gql`
+                fragment NewBook on Book {
+                  id
+                  name
+                  description
+                }
+              `,
+            });
+
+            // Prevent duplicates
+            if (
+              existingBooks.some(
+                (bookRef) => readField("id", bookRef) === newBook.id
+              )
+            ) {
+              return existingBooksResponse;
+            }
+
+            return {
+              ...existingBooksResponse,
+              books: [newBookRef, ...existingBooks],
+            };
+          },
+        },
+      });
     },
   });
 
