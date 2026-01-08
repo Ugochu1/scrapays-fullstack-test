@@ -101,6 +101,7 @@ function DashboardPage() {
             />
 
             <BookList
+              isBooksLoading={isBooksLoading}
               bookList={data?.books.books ?? []}
               onPressView={onPressView}
               onPressDelete={onPressDelete}

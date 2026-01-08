@@ -19,6 +19,8 @@ createRoot(document.getElementById("root")!).render(
             authorizationParams={{
               redirect_uri: window.location.origin,
             }}
+            useRefreshTokens={true}
+            cacheLocation="localstorage" // prevent re-authentication with every page refresh
           >
             <App />
           </Auth0Provider>

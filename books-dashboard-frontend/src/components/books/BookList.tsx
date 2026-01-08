@@ -4,6 +4,7 @@ import type { Book } from "@/interfaces/book";
 import AppEmptyState from "../common/AppEmptyState";
 
 interface BookListProps {
+  isBooksLoading: boolean;
   bookList: { id: number; name: string; description: string }[];
   onPressView: (book: Book) => void;
   onPressEdit: (book: Book) => void;
@@ -11,12 +12,13 @@ interface BookListProps {
 }
 
 function BookList({
+  isBooksLoading,
   bookList,
   onPressView,
   onPressEdit,
   onPressDelete,
 }: BookListProps) {
-  if (bookList.length === 0) {
+  if (bookList.length === 0 && !isBooksLoading) {
     return (
       <AppEmptyState
         title="No books found."

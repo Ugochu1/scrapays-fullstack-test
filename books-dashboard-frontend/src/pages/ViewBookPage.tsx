@@ -24,12 +24,16 @@ function ViewBookPage() {
 
   return (
     <>
-      <DashboardLayout
-        headerTitle="Book Details"
-      >
+      <DashboardLayout headerTitle="Book Details">
         {loading && <AppLoader loaderText="Fetching Book..." />}
 
-        {data?.book && !loading ? (
+        {!data?.book && !loading && (
+          <AppEmptyState
+            title="Book not found."
+            description="The searched book does not exist"
+          />
+        )}
+        {data?.book && !loading && (
           <VStack alignItems="flex-start" spaceY={10}>
             <VStack alignItems="flex-start" w="full" spaceY={3}>
               <HStack>
@@ -57,11 +61,6 @@ function ViewBookPage() {
               </Link>
             </HStack>
           </VStack>
-        ) : (
-          <AppEmptyState
-            title="Book not found."
-            description="The searched book does not exist"
-          />
         )}
       </DashboardLayout>
       {/* display are you sure delete dialog to confirm */}

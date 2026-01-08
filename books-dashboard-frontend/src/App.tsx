@@ -15,7 +15,7 @@ function App() {
   if (isLoading) {
     return (
       <Center h="full" w="100vw" bg="bg">
-        <AppLoader fullPage loaderText="Signing in" />
+        <AppLoader fullPage />
       </Center>
     );
   }

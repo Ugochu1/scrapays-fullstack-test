@@ -83,7 +83,14 @@ function EditBookPage() {
     <>
       <DashboardLayout headerTitle="Edit Book">
         {isFetchingBookLoading && <AppLoader loaderText="Fetching book..." />}
-        {data?.book && !isFetchingBookLoading ? (
+
+        {!data?.book && !isFetchingBookLoading && (
+          <AppEmptyState
+            title="Book not found."
+            description="The searched book does not exist"
+          />
+        )}
+        {data?.book && !isFetchingBookLoading && (
           <VStack alignItems="flex-start" spaceY={5}>
             <AppText>Update the texts to edit</AppText>
             <VStack spaceY={3} w="full">
@@ -116,11 +123,6 @@ function EditBookPage() {
               </AppButton>
             </HStack>
           </VStack>
-        ) : (
-          <AppEmptyState
-            title="Book not found."
-            description="The searched book does not exist"
-          />
         )}
       </DashboardLayout>
       <DeleteBookDialog
