@@ -3,11 +3,7 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { toaster } from "@/components/ui/toaster";
-import { ADD_BOOK } from "@/graphql/books/mutations";
-import type { Reference } from "@apollo/client";
-import { gql } from "@apollo/client";
-import { useMutation } from "@apollo/client/react";
+import useAddBookMutation from "@/hooks/api/mutations/useAddBookMutation";
 import { VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
@@ -15,64 +11,12 @@ function AddBookPage() {
   const [bookName, setBookName] = useState("");
   const [bookDescription, setBookDescription] = useState("");
 
-  const [addBook, { loading: addBookLoading }] = useMutation(ADD_BOOK, {
-    variables: {
-      newBookData: {
-        name: bookName,
-        description: bookDescription,
-      },
-    },
-    onError(error) {
-      toaster.create({
-        description: error.message,
-        type: "error",
-      });
-    },
-    onCompleted(data) {
-      toaster.create({
-        description: `Successfully added book "${data.add_book.name}"`,
-        type: "success",
-      });
+  const { addBook, addBookLoading } = useAddBookMutation({
+    bookName,
+    bookDescription,
+    onAddCompleted() {
       setBookName(""); // reset
       setBookDescription(""); // reset
-    },
-    update(cache, { data }) {
-      const newBook = data?.add_book;
-      if (!newBook) return;
-
-      cache.modify({
-        fields: {
-          books(existingBooksResponse = {}, { readField }) {
-            const existingBooks: readonly Reference[] =
-              existingBooksResponse.books ?? [];
-
-            const newBookRef = cache.writeFragment({
-              data: newBook,
-              fragment: gql`
-                fragment NewBook on Book {
-                  id
-                  name
-                  description
-                }
-              `,
-            });
-
-            // Prevent duplicates
-            if (
-              existingBooks.some(
-                (bookRef) => readField("id", bookRef) === newBook.id
-              )
-            ) {
-              return existingBooksResponse;
-            }
-
-            return {
-              ...existingBooksResponse,
-              books: [newBookRef, ...existingBooks],
-            };
-          },
-        },
-      });
     },
   });
 

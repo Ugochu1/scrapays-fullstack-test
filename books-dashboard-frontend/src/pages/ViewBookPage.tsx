@@ -4,8 +4,7 @@ import AppEmptyState from "@/components/common/AppEmptyState";
 import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { GET_BOOK } from "@/graphql/books/queries";
-import { useQuery } from "@apollo/client/react";
+import useGetBookQuery from "@/hooks/api/queries/useGetBookQuery";
 import { HStack, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
@@ -14,9 +13,7 @@ function ViewBookPage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { data, error, loading } = useQuery(GET_BOOK, {
-    variables: { id: parseInt(id as string) },
-  });
+  const { data, error, loading } = useGetBookQuery({ id: parseInt(id as string) });
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 

@@ -1,11 +1,8 @@
 import type { Book } from "@/interfaces/book";
 import AppButton from "../common/AppButton";
 import AppDialog from "../common/AppDialog";
-import { useMutation } from "@apollo/client/react";
-import { DELETE_BOOK } from "@/graphql/books/mutations";
 import AppLoader from "../common/AppLoader";
-import type { Reference } from "@apollo/client";
-import { toaster } from "../ui/toaster";
+import useDeleteBookMutation from "@/hooks/api/mutations/useDeleteBookMutation";
 
 interface DeleteBookDialogProps {
   selectedBook?: Book;
@@ -20,41 +17,9 @@ function DeleteBookDialog({
   setDialogOpen,
   onDeleteCompleted,
 }: DeleteBookDialogProps) {
-  const [deleteBook, { loading: isDeleting }] = useMutation(DELETE_BOOK, {
-    variables: { bookId: selectedBook?.id },
-    onError(error) {
-      console.log(error.name, "occurred when deleting book");
-      toaster.create({
-        description: error.message,
-        type: "error",
-      });
-    },
-    onCompleted(data) {
-      toaster.create({
-        description: `${data.delete_book.name} deleted successfully`,
-        type: "success",
-      });
-      if (onDeleteCompleted) onDeleteCompleted(data.delete_book); // call onDelete callback on parent
-    },
-    update(cache, { data }) {
-      const deletedBookId = data?.delete_book?.id;
-      if (!deletedBookId) return;
-      cache.modify({
-        fields: {
-          books(existingBooksResponse = {}, { readField }) {
-            const existingBooks: readonly Reference[] =
-              existingBooksResponse.books ?? [];
-
-            return {
-              ...existingBooksResponse,
-              books: existingBooks.filter((bookRef) => {
-                return readField("id", bookRef) !== deletedBookId;
-              }),
-            };
-          },
-        },
-      });
-    },
+  const { deleteBook, isDeleting } = useDeleteBookMutation({
+    selectedBook,
+    onDeleteCompleted,
   });
 
   const deleteBookAndCloseDialog = async () => {

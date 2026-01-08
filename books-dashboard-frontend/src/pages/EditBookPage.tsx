@@ -5,10 +5,8 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { toaster } from "@/components/ui/toaster";
-import { EDIT_BOOK } from "@/graphql/books/mutations";
-import { GET_BOOK } from "@/graphql/books/queries";
-import { useMutation, useQuery } from "@apollo/client/react";
+import useEditBookMutation from "@/hooks/api/mutations/useEditBookMutation";
+import useGetBookQuery from "@/hooks/api/queries/useGetBookQuery";
 import { HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useEffectEvent, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -16,13 +14,12 @@ import { useNavigate, useParams } from "react-router";
 function EditBookPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const {
     data,
-    error: isFetchingError,
     loading: isFetchingBookLoading,
-  } = useQuery(GET_BOOK, {
-    variables: { id: parseInt(id as string) },
-  });
+    error: isFetchingBookError,
+  } = useGetBookQuery({ id: parseInt(id as string) });
 
   // manage delete dialog state
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -31,27 +28,11 @@ function EditBookPage() {
   const [bookName, setBookName] = useState("");
   const [bookDescription, setBookDescription] = useState("");
 
-  const [editBook, { loading: isEditBookLoading }] = useMutation(EDIT_BOOK, {
-    variables: {
-      editBookData: {
-        id: bookId,
-        name: bookName,
-        description: bookDescription,
-      },
-    },
-    onError(error) {
-      // do something with the error message
-      console.log(error.message, error.name);
-      toaster.create({
-        description: error.message,
-        type: "error",
-      });
-    },
-    onCompleted(data) {
-      toaster.create({
-        description: `Successfully updated book "${data.edit_book.name}"`,
-        type: "success",
-      });
+  const {editBook, isEditBookLoading} = useEditBookMutation({
+    bookId,
+    bookName,
+    bookDescription,
+    onEditCompleted(data) {
       setBookName(data.edit_book.name);
       setBookDescription(data.edit_book.description);
     },
@@ -77,7 +58,7 @@ function EditBookPage() {
     setDefaultBookValues();
   }, [data?.book]);
 
-  if (isFetchingError) console.log(isFetchingError);
+  if (isFetchingBookError) console.log(isFetchingBookError);
 
   return (
     <>

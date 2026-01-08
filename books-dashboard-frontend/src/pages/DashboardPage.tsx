@@ -5,9 +5,8 @@ import AppLoader from "@/components/common/AppLoader";
 import AppText from "@/components/common/AppText";
 import AppTextInput from "@/components/common/AppTextInput";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { GET_BOOKS } from "@/graphql/books/queries";
+import useGetBooksQuery from "@/hooks/api/queries/useGetBooksQuery";
 import type { Book } from "@/interfaces/book";
-import { useQuery } from "@apollo/client/react";
 import { Flex, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
@@ -26,43 +25,12 @@ function DashboardPage() {
   const [searchBookName, setSearchBookName] = useState("");
   const [debouncedSearch] = useDebounce(searchBookName, 300); // 300ms debounce
 
-  // get books query
-  const {
-    data,
-    loading: isBooksLoading,
-    error,
-    fetchMore,
-  } = useQuery(GET_BOOKS, {
-    variables: {
-      name: debouncedSearch || undefined,
-      limit: LIMIT,
-      page: 1,
-    },
-    notifyOnNetworkStatusChange: true,
+  const { data, isBooksLoading, error, loadMore } = useGetBooksQuery({
+    debouncedSearch,
+    limit: LIMIT,
   });
 
   if (error) console.log(error);
-
-  const loadMore = async () => {
-    if (!data?.books.pageInfo.hasNextPage) return;
-
-    await fetchMore({
-      variables: {
-        page: data.books.pageInfo.page + 1,
-        limit: LIMIT,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-
-        return {
-          books: {
-            ...fetchMoreResult.books,
-            books: [...prev.books.books, ...fetchMoreResult.books.books],
-          },
-        };
-      },
-    });
-  };
 
   const onPressDelete = (book: Book) => {
     setSelectedBook(book);
